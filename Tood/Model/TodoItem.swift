@@ -10,44 +10,34 @@ import SwiftUI
 import Firebase
 
 struct TodoItem: Identifiable, Hashable, Codable {
-    var id: String = "1"
+    var documentID: String
+    var id: String
     var done: Bool = false
-    var title: String = "Title"
-    var text: String = "Text"
-    var category: String = "Sports"
+    var title: String
+    var text: String
+    var category: String
     
-    var dictionary: [String: Any] {
-        return [
-            "id": id,
-            "done": done,
-            "title": title,
-            "text": text,
-            "category": category
-        ]
-    }
-    
-    mutating func toggle() -> Void {
-        self.done.toggle()
-    }
-
 }
 
 extension TodoItem: DocumentSerializable {
-    init?(dictionary: [String: Any]) {
+    init?(documentID: String, dictionary: [String: Any]) {
         guard let done = dictionary["done"] as? Bool,
             let title = dictionary["title"] as? String,
             let text = dictionary["text"] as? String,
             let category = dictionary["category"] as? String
         else { return nil }
-        
-        
-        
+ 
         self.init(
+            documentID: documentID
             done: done,
             title: title,
             text: text,
             category: category
         )
+    }
+    
+    init?(document: QueryDocumentSnapshot) {
+        self.init(documentID: document.documentID, dictionary: document.data())
     }
 }
 
