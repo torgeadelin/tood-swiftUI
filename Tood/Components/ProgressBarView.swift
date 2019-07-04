@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ProgressBarView : View {
-    @State var value = 50.0 //percent
+    @State var value: Double = 50.0 //percent
     var backgorundColor = Color("gray")
     var foregroundColor = Color.black
     
